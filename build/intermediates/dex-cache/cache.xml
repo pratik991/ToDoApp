@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/pratikdabhi/Desktop/ToDoApp/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="24.0.1"
+        sha1="30ec3204c67d3abd12cb2f9b6ca0582843f70882">
+        <dex dex="/Users/pratikdabhi/Desktop/ToDoApp/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_a7051a7e6d3518c1718dd9dd1ab2988ced0dabd2/classes.dex" />
+    </item>
+
+</items>
