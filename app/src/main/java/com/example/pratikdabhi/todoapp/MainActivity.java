@@ -1,6 +1,7 @@
 package com.example.pratikdabhi.todoapp;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,16 +11,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditItemDialogFragment.EditItemDialogListener{
 
     List<Action> items;
     ArrayAdapter<Action> itemsAdaptor;
     ListView lvItems;
-    private final int REQUEST_CODE = 20;
     private DatabaseController dbController;
 
     @Override
@@ -61,29 +62,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowID){
                 //open the edit window
-                Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-                i.putExtra("position", position);
-                i.putExtra("action", items.get(position).getAction());
-                //startActivity(i);
-                startActivityForResult(i, REQUEST_CODE);
+
+                FragmentManager fm = getSupportFragmentManager();
+                String taskName = items.get(position).getAction();
+                EditItemDialogFragment editNameDialogFragment = EditItemDialogFragment.newInstance(taskName,position);
+                editNameDialogFragment.show(fm, "fragment_edit_name");
+
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data){
-        if ( requestCode == REQUEST_CODE && resultCode == RESULT_OK){
-            String action = data.getExtras().getString("action");
-            int position = data.getExtras().getInt("position", 0);
-            String oldAction = data.getExtras().getString("oldAction");
-
-            items.set(position, new Action(position, action));
-            itemsAdaptor.notifyDataSetChanged();
-
-            Action NewAction = new Action(position, action);
-            Action OldAction = new Action(position, oldAction);
-            int result = dbController.update(OldAction, NewAction);
-        }
     }
 
     @Override
@@ -117,4 +103,16 @@ public class MainActivity extends AppCompatActivity {
         items = (ArrayList<Action>)dbController.getAll();
     }
 
+    @Override
+    public void onFinishEditDialog(int position, String newTaskName, String oldTaskName) {
+
+        items.set(position, new Action(position, newTaskName));
+        itemsAdaptor.notifyDataSetChanged();
+
+        Action NewAction = new Action(position, newTaskName);
+        Action OldAction = new Action(position, oldTaskName);
+
+        dbController.update(OldAction, NewAction);
+
+    }
 }
