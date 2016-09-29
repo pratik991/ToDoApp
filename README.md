@@ -14,5 +14,5 @@ User tasks are save in a SQLite database.
 
 Walk through of user stories.
 
-![video walk-through] (Demo_todoApp.gif)
+![video walk-through] (ToDo_App.gif)
 
